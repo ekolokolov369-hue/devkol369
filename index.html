@@ -1,0 +1,2432 @@
+```html
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>BOTLAB — Telegram Bots, Websites & Digital Solutions</title>
+
+  <meta name="description"
+        content="Створення Telegram-ботів, сайтів, Mini Apps, автоматизації та цифрових рішень під ключ.">
+
+  <meta name="theme-color" content="#07070b">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: Inter, Arial, sans-serif;
+      background: #07070b;
+      color: #fff;
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button,
+    input,
+    textarea,
+    select {
+      font: inherit;
+    }
+
+    :root {
+      --bg: #07070b;
+      --bg2: #0d0d14;
+      --card: rgba(255,255,255,.045);
+      --border: rgba(255,255,255,.09);
+      --text: #ffffff;
+      --muted: #9898a8;
+      --accent: #7c5cff;
+      --accent2: #00d4ff;
+      --success: #31e981;
+      --gradient: linear-gradient(135deg, #7c5cff, #00d4ff);
+    }
+
+    /* BACKGROUND */
+
+    .background {
+      position: fixed;
+      inset: 0;
+      z-index: -5;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(124,92,255,.13), transparent 30%),
+        radial-gradient(circle at 80% 30%, rgba(0,212,255,.09), transparent 28%),
+        radial-gradient(circle at 50% 100%, rgba(124,92,255,.08), transparent 35%),
+        #07070b;
+    }
+
+    .grid {
+      position: absolute;
+      inset: 0;
+      opacity: .12;
+      background-image:
+        linear-gradient(rgba(255,255,255,.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.08) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: linear-gradient(to bottom, black, transparent 85%);
+    }
+
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      animation: float 10s ease-in-out infinite alternate;
+    }
+
+    .orb.one {
+      width: 280px;
+      height: 280px;
+      background: rgba(124,92,255,.15);
+      top: 10%;
+      left: -100px;
+    }
+
+    .orb.two {
+      width: 350px;
+      height: 350px;
+      background: rgba(0,212,255,.10);
+      right: -120px;
+      top: 35%;
+      animation-delay: 2s;
+    }
+
+    @keyframes float {
+      from {
+        transform: translate(0,0);
+      }
+      to {
+        transform: translate(40px,-30px);
+      }
+    }
+
+    /* HEADER */
+
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 100;
+      padding: 18px 5%;
+      transition: .3s;
+    }
+
+    header.scrolled {
+      background: rgba(7,7,11,.75);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav {
+      max-width: 1250px;
+      margin: auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-size: 22px;
+      font-weight: 900;
+      letter-spacing: -1px;
+    }
+
+    .logo span {
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 30px;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: #aaaab7;
+      font-size: 14px;
+      transition: .25s;
+    }
+
+    .nav-links a:hover {
+      color: white;
+    }
+
+    .nav-right {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .lang {
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.04);
+      color: white;
+      padding: 9px 12px;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    .lang option {
+      background: #111118;
+    }
+
+    .menu-btn {
+      display: none;
+      background: none;
+      border: 0;
+      color: white;
+      font-size: 25px;
+      cursor: pointer;
+    }
+
+    /* BUTTONS */
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 13px 20px;
+      border-radius: 12px;
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: .3s;
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .btn-primary {
+      background: var(--gradient);
+      color: white;
+      box-shadow: 0 10px 35px rgba(124,92,255,.22);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 45px rgba(124,92,255,.35);
+    }
+
+    .btn-outline {
+      background: rgba(255,255,255,.03);
+      border-color: var(--border);
+      color: white;
+    }
+
+    .btn-outline:hover {
+      background: rgba(255,255,255,.08);
+      transform: translateY(-3px);
+    }
+
+    /* HERO */
+
+    .hero {
+      min-height: 100vh;
+      padding: 150px 5% 90px;
+      display: flex;
+      align-items: center;
+      position: relative;
+    }
+
+    .hero-inner {
+      max-width: 1250px;
+      width: 100%;
+      margin: auto;
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 70px;
+      align-items: center;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.04);
+      padding: 7px 12px;
+      border-radius: 100px;
+      color: #bdbdca;
+      font-size: 12px;
+      margin-bottom: 25px;
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--success);
+      box-shadow: 0 0 12px var(--success);
+    }
+
+    h1 {
+      font-size: clamp(48px, 6vw, 82px);
+      line-height: .98;
+      letter-spacing: -4px;
+      margin-bottom: 25px;
+    }
+
+    .gradient-text {
+      background: linear-gradient(135deg,#fff 20%,#7c5cff 55%,#00d4ff);
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .hero-description {
+      color: var(--muted);
+      max-width: 650px;
+      font-size: 18px;
+      margin-bottom: 32px;
+    }
+
+    .hero-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 35px;
+      margin-top: 45px;
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 26px;
+    }
+
+    .stat span {
+      color: #777785;
+      font-size: 12px;
+    }
+
+    /* HERO CARD */
+
+    .hero-card {
+      position: relative;
+      min-height: 460px;
+      border: 1px solid var(--border);
+      border-radius: 30px;
+      background: linear-gradient(145deg,rgba(255,255,255,.07),rgba(255,255,255,.015));
+      backdrop-filter: blur(20px);
+      overflow: hidden;
+      box-shadow: 0 40px 100px rgba(0,0,0,.4);
+      transform: perspective(1000px) rotateY(-4deg);
+    }
+
+    .hero-card::before {
+      content: "";
+      position: absolute;
+      width: 300px;
+      height: 300px;
+      background: #7c5cff;
+      opacity: .13;
+      filter: blur(80px);
+      top: -100px;
+      right: -100px;
+    }
+
+    .code-window {
+      margin: 25px;
+      border: 1px solid var(--border);
+      background: #090910;
+      border-radius: 18px;
+      overflow: hidden;
+    }
+
+    .window-top {
+      padding: 13px;
+      display: flex;
+      gap: 7px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .circle {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: #555;
+    }
+
+    .code {
+      padding: 25px;
+      font-family: monospace;
+      font-size: 13px;
+      line-height: 2;
+      color: #aaaac0;
+    }
+
+    .purple {
+      color: #9c7cff;
+    }
+
+    .cyan {
+      color: #52dcff;
+    }
+
+    .green {
+      color: #63e6a7;
+    }
+
+    .floating-card {
+      position: absolute;
+      padding: 16px 18px;
+      border-radius: 16px;
+      background: rgba(20,20,30,.8);
+      border: 1px solid var(--border);
+      backdrop-filter: blur(20px);
+      box-shadow: 0 20px 50px rgba(0,0,0,.35);
+    }
+
+    .floating-one {
+      bottom: 35px;
+      left: 20px;
+    }
+
+    .floating-two {
+      top: 170px;
+      right: 15px;
+    }
+
+    /* SECTION */
+
+    section {
+      padding: 110px 5%;
+      position: relative;
+    }
+
+    .container {
+      max-width: 1250px;
+      margin: auto;
+    }
+
+    .section-heading {
+      text-align: center;
+      max-width: 750px;
+      margin: 0 auto 55px;
+    }
+
+    .eyebrow {
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: #7c5cff;
+      font-size: 11px;
+      font-weight: 800;
+      margin-bottom: 12px;
+    }
+
+    .section-heading h2 {
+      font-size: clamp(35px,5vw,58px);
+      letter-spacing: -2px;
+      line-height: 1.05;
+      margin-bottom: 17px;
+    }
+
+    .section-heading p {
+      color: var(--muted);
+    }
+
+    /* SERVICES */
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3,1fr);
+      gap: 18px;
+    }
+
+    .service-card {
+      padding: 30px;
+      border: 1px solid var(--border);
+      background: var(--card);
+      border-radius: 22px;
+      transition: .35s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .service-card::after {
+      content: "";
+      position: absolute;
+      width: 150px;
+      height: 150px;
+      background: #7c5cff;
+      filter: blur(80px);
+      opacity: 0;
+      right: -70px;
+      bottom: -70px;
+      transition: .35s;
+    }
+
+    .service-card:hover {
+      transform: translateY(-8px);
+      border-color: rgba(124,92,255,.35);
+      background: rgba(255,255,255,.065);
+    }
+
+    .service-card:hover::after {
+      opacity: .15;
+    }
+
+    .icon {
+      width: 50px;
+      height: 50px;
+      display: grid;
+      place-items: center;
+      border-radius: 14px;
+      background: rgba(124,92,255,.12);
+      border: 1px solid rgba(124,92,255,.2);
+      font-size: 22px;
+      margin-bottom: 20px;
+    }
+
+    .service-card h3 {
+      margin-bottom: 10px;
+      font-size: 19px;
+    }
+
+    .service-card p {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .service-list {
+      margin-top: 20px;
+      list-style: none;
+      color: #aaaab6;
+      font-size: 13px;
+    }
+
+    .service-list li {
+      margin: 7px 0;
+    }
+
+    .service-list li::before {
+      content: "✓";
+      color: #7c5cff;
+      margin-right: 8px;
+    }
+
+    /* PROCESS */
+
+    .process {
+      display: grid;
+      grid-template-columns: repeat(4,1fr);
+      gap: 15px;
+    }
+
+    .process-card {
+      padding: 28px;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      background: var(--card);
+      position: relative;
+    }
+
+    .number {
+      font-size: 12px;
+      color: #7c5cff;
+      font-weight: 800;
+      margin-bottom: 20px;
+    }
+
+    .process-card h3 {
+      margin-bottom: 10px;
+    }
+
+    .process-card p {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    /* PORTFOLIO */
+
+    .portfolio {
+      display: grid;
+      grid-template-columns: repeat(3,1fr);
+      gap: 20px;
+    }
+
+    .project {
+      min-height: 330px;
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 25px;
+      background:
+        linear-gradient(145deg,rgba(124,92,255,.12),rgba(255,255,255,.025));
+      position: relative;
+      overflow: hidden;
+      transition: .3s;
+    }
+
+    .project:hover {
+      transform: translateY(-7px);
+    }
+
+    .project-visual {
+      height: 170px;
+      border-radius: 15px;
+      background: #0a0a11;
+      border: 1px solid var(--border);
+      margin-bottom: 20px;
+      display: grid;
+      place-items: center;
+      font-size: 55px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .project-visual::before {
+      content: "";
+      position: absolute;
+      width: 180px;
+      height: 180px;
+      background: #7c5cff;
+      filter: blur(70px);
+      opacity: .15;
+    }
+
+    .project h3 {
+      margin-bottom: 5px;
+    }
+
+    .project p {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    /* PRICING */
+
+    .pricing {
+      display: grid;
+      grid-template-columns: repeat(3,1fr);
+      gap: 20px;
+    }
+
+    .price-card {
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 32px;
+      background: var(--card);
+      position: relative;
+    }
+
+    .price-card.featured {
+      border-color: rgba(124,92,255,.55);
+      box-shadow: 0 25px 80px rgba(124,92,255,.12);
+      transform: scale(1.03);
+    }
+
+    .popular {
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      font-size: 10px;
+      padding: 6px 9px;
+      background: var(--gradient);
+      border-radius: 100px;
+      font-weight: 800;
+    }
+
+    .price-card h3 {
+      margin-bottom: 10px;
+    }
+
+    .price {
+      font-size: 42px;
+      font-weight: 900;
+      margin: 15px 0;
+    }
+
+    .price small {
+      color: #777785;
+      font-size: 12px;
+      font-weight: 400;
+    }
+
+    .price-card p {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .price-list {
+      list-style: none;
+      margin: 25px 0;
+      color: #b5b5c0;
+      font-size: 13px;
+    }
+
+    .price-list li {
+      margin: 11px 0;
+    }
+
+    /* FAQ */
+
+    .faq {
+      max-width: 850px;
+      margin: auto;
+    }
+
+    .faq-item {
+      border-bottom: 1px solid var(--border);
+    }
+
+    .faq-question {
+      width: 100%;
+      background: none;
+      color: white;
+      border: 0;
+      padding: 23px 0;
+      display: flex;
+      justify-content: space-between;
+      text-align: left;
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: .35s;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .faq-item.active .faq-answer {
+      max-height: 200px;
+      padding-bottom: 22px;
+    }
+
+    .faq-item.active .plus {
+      transform: rotate(45deg);
+    }
+
+    .plus {
+      font-size: 22px;
+      transition: .3s;
+    }
+
+    /* CTA */
+
+    .cta-box {
+      border: 1px solid rgba(124,92,255,.3);
+      border-radius: 30px;
+      padding: 70px 30px;
+      text-align: center;
+      background:
+        radial-gradient(circle at 50% 0%,rgba(124,92,255,.15),transparent 45%),
+        rgba(255,255,255,.03);
+      overflow: hidden;
+    }
+
+    .cta-box h2 {
+      font-size: clamp(35px,5vw,60px);
+      line-height: 1;
+      letter-spacing: -2px;
+      margin-bottom: 20px;
+    }
+
+    .cta-box p {
+      color: var(--muted);
+      max-width: 600px;
+      margin: 0 auto 30px;
+    }
+
+    /* CONTACT */
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: .8fr 1.2fr;
+      gap: 50px;
+      align-items: start;
+    }
+
+    .contact-info h2 {
+      font-size: 45px;
+      line-height: 1;
+      letter-spacing: -2px;
+      margin-bottom: 20px;
+    }
+
+    .contact-info p {
+      color: var(--muted);
+      margin-bottom: 30px;
+    }
+
+    .contact-item {
+      display: flex;
+      gap: 13px;
+      align-items: center;
+      margin: 17px 0;
+      color: #bbb;
+    }
+
+    .contact-icon {
+      width: 40px;
+      height: 40px;
+      display: grid;
+      place-items: center;
+      border-radius: 10px;
+      background: rgba(255,255,255,.05);
+    }
+
+    .contact-form {
+      padding: 30px;
+      border: 1px solid var(--border);
+      border-radius: 25px;
+      background: var(--card);
+    }
+
+    .form-group {
+      margin-bottom: 17px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 12px;
+      color: #aaa;
+      margin-bottom: 7px;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      padding: 14px;
+      border-radius: 11px;
+      border: 1px solid var(--border);
+      background: rgba(0,0,0,.2);
+      color: white;
+      outline: none;
+      transition: .2s;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      border-color: #7c5cff;
+      box-shadow: 0 0 0 3px rgba(124,92,255,.08);
+    }
+
+    textarea {
+      min-height: 130px;
+      resize: vertical;
+    }
+
+    /* FOOTER */
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 35px 5%;
+    }
+
+    .footer-inner {
+      max-width: 1250px;
+      margin: auto;
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      color: #777785;
+      font-size: 12px;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 20px;
+    }
+
+    /* REVEAL */
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(35px);
+      transition: opacity .8s, transform .8s;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* MOBILE */
+
+    @media(max-width: 900px) {
+
+      .nav-links {
+        position: absolute;
+        top: 75px;
+        left: 5%;
+        right: 5%;
+        padding: 20px;
+        background: rgba(12,12,18,.96);
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        display: none;
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .nav-links.active {
+        display: flex;
+      }
+
+      .menu-btn {
+        display: block;
+      }
+
+      .hero-inner {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-card {
+        min-height: 380px;
+      }
+
+      .services-grid,
+      .portfolio,
+      .pricing {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .process {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .contact-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media(max-width: 600px) {
+
+      header {
+        padding: 15px 5%;
+      }
+
+      h1 {
+        letter-spacing: -2px;
+      }
+
+      section {
+        padding: 80px 5%;
+      }
+
+      .services-grid,
+      .portfolio,
+      .pricing,
+      .process {
+        grid-template-columns: 1fr;
+      }
+
+      .price-card.featured {
+        transform: none;
+      }
+
+      .hero {
+        padding-top: 120px;
+      }
+
+      .hero-stats {
+        gap: 20px;
+        flex-wrap: wrap;
+      }
+
+      .hero-card {
+        min-height: 340px;
+      }
+
+      .code {
+        font-size: 10px;
+      }
+
+      .floating-card {
+        font-size: 11px;
+      }
+
+      .contact-info h2 {
+        font-size: 38px;
+      }
+
+      .footer-inner {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="background">
+  <div class="grid"></div>
+  <div class="orb one"></div>
+  <div class="orb two"></div>
+</div>
+
+<!-- HEADER -->
+
+<header id="header">
+
+  <nav class="nav">
+
+    <a href="#home" class="logo">
+      BOT<span>LAB</span>
+    </a>
+
+    <div class="nav-links" id="navLinks">
+      <a href="#services" data-i18n="nav_services">Послуги</a>
+      <a href="#portfolio" data-i18n="nav_portfolio">Портфоліо</a>
+      <a href="#process" data-i18n="nav_process">Процес</a>
+      <a href="#pricing" data-i18n="nav_prices">Ціни</a>
+      <a href="#faq" data-i18n="nav_faq">FAQ</a>
+      <a href="#contact" data-i18n="nav_contact">Контакти</a>
+    </div>
+
+    <div class="nav-right">
+
+      <select class="lang" id="language">
+        <option value="uk">UA</option>
+        <option value="en">EN</option>
+      </select>
+
+      <a href="#contact" class="btn btn-primary">
+        <span data-i18n="nav_button">Замовити</span>
+      </a>
+
+      <button class="menu-btn" id="menuBtn">☰</button>
+
+    </div>
+
+  </nav>
+
+</header>
+
+
+<!-- HERO -->
+
+<main>
+
+<section class="hero" id="home">
+
+  <div class="hero-inner">
+
+    <div class="hero-content reveal">
+
+      <div class="badge">
+        <span class="status-dot"></span>
+        <span data-i18n="badge">
+          Працюємо з клієнтами по всьому світу
+        </span>
+      </div>
+
+      <h1>
+        <span data-i18n="hero_title1">
+          Створюємо цифрові
+        </span>
+        <br>
+        <span class="gradient-text" data-i18n="hero_title2">
+          продукти нового рівня
+        </span>
+      </h1>
+
+      <p class="hero-description" data-i18n="hero_description">
+        Telegram-боти, Mini Apps, сайти, вебсервіси,
+        автоматизація та AI-рішення. Від ідеї до готового продукту.
+      </p>
+
+      <div class="hero-buttons">
+
+        <a href="#contact" class="btn btn-primary">
+          🚀 <span data-i18n="hero_button1">Обговорити проєкт</span>
+        </a>
+
+        <a href="#portfolio" class="btn btn-outline">
+          <span data-i18n="hero_button2">Дивитися роботи</span>
+          →
+        </a>
+
+      </div>
+
+      <div class="hero-stats">
+
+        <div class="stat">
+          <strong>24/7</strong>
+          <span data-i18n="stat1">Підтримка</span>
+        </div>
+
+        <div class="stat">
+          <strong>∞</strong>
+          <span data-i18n="stat2">Можливості</span>
+        </div>
+
+        <div class="stat">
+          <strong>100%</strong>
+          <span data-i18n="stat3">Під ключ</span>
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="hero-card reveal">
+
+      <div class="code-window">
+
+        <div class="window-top">
+          <span class="circle"></span>
+          <span class="circle"></span>
+          <span class="circle"></span>
+        </div>
+
+        <div class="code">
+
+          <div>
+            <span class="purple">const</span>
+            project = {
+          </div>
+
+          <div>
+            &nbsp;&nbsp;type:
+            <span class="green">"digital"</span>,
+          </div>
+
+          <div>
+            &nbsp;&nbsp;telegram:
+            <span class="green">true</span>,
+          </div>
+
+          <div>
+            &nbsp;&nbsp;website:
+            <span class="green">true</span>,
+          </div>
+
+          <div>
+            &nbsp;&nbsp;automation:
+            <span class="green">true</span>,
+          </div>
+
+          <div>
+            &nbsp;&nbsp;ai:
+            <span class="green">true</span>,
+          </div>
+
+          <div>
+            &nbsp;&nbsp;design:
+            <span class="green">"premium"</span>
+          </div>
+
+          <div>};</div>
+
+          <br>
+
+          <div>
+            <span class="cyan">launch</span>(project);
+          </div>
+
+          <div>
+            <span class="purple">→</span>
+            <span class="green">SUCCESS</span>
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="floating-card floating-one">
+        ⚡ <b>Fast</b><br>
+        <small>Development</small>
+      </div>
+
+      <div class="floating-card floating-two">
+        🤖 <b>AI + Bots</b>
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- SERVICES -->
+
+<section id="services">
+
+  <div class="container">
+
+    <div class="section-heading reveal">
+
+      <div class="eyebrow" data-i18n="services_eyebrow">
+        Наші можливості
+      </div>
+
+      <h2 data-i18n="services_title">
+        Робимо більше, ніж просто сайти
+      </h2>
+
+      <p data-i18n="services_description">
+        Повний спектр digital-розробки для бізнесу,
+        стартапів та особистих проєктів.
+      </p>
+
+    </div>
+
+
+    <div class="services-grid">
+
+      <div class="service-card reveal">
+
+        <div class="icon">🤖</div>
+
+        <h3 data-i18n="s1_title">
+          Telegram-боти
+        </h3>
+
+        <p data-i18n="s1_text">
+          Розумні боти для бізнесу, продажів,
+          підтримки та автоматизації.
+        </p>
+
+        <ul class="service-list">
+          <li data-i18n="s1_l1">Боти-магазини</li>
+          <li data-i18n="s1_l2">Платіжні системи</li>
+          <li data-i18n="s1_l3">CRM інтеграції</li>
+          <li data-i18n="s1_l4">Автоматизація</li>
+        </ul>
+
+      </div>
+
+
+      <div class="service-card reveal">
+
+        <div class="icon">🌐</div>
+
+        <h3 data-i18n="s2_title">
+          Сайти
+        </h3>
+
+        <p data-i18n="s2_text">
+          Сучасні сайти з унікальним дизайном
+          та високою швидкістю.
+        </p>
+
+        <ul class="service-list">
+          <li data-i18n="s2_l1">Landing pages</li>
+          <li data-i18n="s2_l2">Корпоративні сайти</li>
+          <li data-i18n="s2_l3">Інтернет-магазини</li>
+          <li data-i18n="s2_l4">Web Apps</li>
+        </ul>
+
+      </div>
+
+
+      <div class="service-card reveal">
+
+        <div class="icon">📱</div>
+
+        <h3 data-i18n="s3_title">
+          Telegram Mini Apps
+        </h3>
+
+        <p data-i18n="s3_text">
+          Повноцінні вебдодатки всередині Telegram.
+        </p>
+
+        <ul class="service-list">
+          <li data-i18n="s3_l1">Web Apps</li>
+          <li data-i18n="s3_l2">Кабінети користувачів</li>
+          <li data-i18n="s3_l3">Каталоги</li>
+          <li data-i18n="s3_l4">Системи замовлень</li>
+        </ul>
+
+      </div>
+
+
+      <div class="service-card reveal">
+
+        <div class="icon">🧠</div>
+
+        <h3 data-i18n="s4_title">
+          AI-рішення
+        </h3>
+
+        <p data-i18n="s4_text">
+          Інтеграція штучного інтелекту у ваш продукт.
+        </p>
+
+        <ul class="service-list">
+          <li data-i18n="s4_l1">AI-боти</li>
+          <li data-i18n="s4_l2">AI-консультанти</li>
+          <li data-i18n="s4_l3">Автоматизація</li>
+          <li data-i18n="s4_l4">API інтеграції</li>
+        </ul>
+
+      </div>
+
+
+      <div class="service-card reveal">
+
+        <div class="icon">⚙️</div>
+
+        <h3 data-i18n="s5_title">
+          Автоматизація
+        </h3>
+
+        <p data-i18n="s5_text">
+          Прибираємо рутину та автоматизуємо процеси.
+        </p>
+
+        <ul class="service-list">
+          <li data-i18n="s5_l1">CRM</li>
+          <li data-i18n="s5_l2">API</li>
+          <li data-i18n="s5_l3">Парсинг</li>
+          <li data-i18n="s5_l4">Системи повідомлень</li>
+        </ul>
+
+      </div>
+
+
+      <div class="service-card reveal">
+
+        <div class="icon">🎨</div>
+
+        <h3 data-i18n="s6_title">
+          UI/UX та дизайн
+        </h3>
+
+        <p data-i18n="s6_text">
+          Створюємо інтерфейси, які виглядають дорого
+          та зручні для користувача.
+        </p>
+
+        <ul class="service-list">
+          <li data-i18n="s6_l1">UI дизайн</li>
+          <li data-i18n="s6_l2">UX прототипи</li>
+          <li data-i18n="s6_l3">Branding</li>
+          <li data-i18n="s6_l4">Анімації</li>
+        </ul>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- PROCESS -->
+
+<section id="process">
+
+  <div class="container">
+
+    <div class="section-heading reveal">
+
+      <div class="eyebrow" data-i18n="process_eyebrow">
+        Як ми працюємо
+      </div>
+
+      <h2 data-i18n="process_title">
+        Від ідеї до запуску
+      </h2>
+
+      <p data-i18n="process_description">
+        Простий процес без зайвої бюрократії.
+      </p>
+
+    </div>
+
+
+    <div class="process">
+
+      <div class="process-card reveal">
+        <div class="number">01</div>
+        <h3 data-i18n="p1_title">Ідея</h3>
+        <p data-i18n="p1_text">
+          Обговорюємо вашу задачу, цілі та майбутній продукт.
+        </p>
+      </div>
+
+      <div class="process-card reveal">
+        <div class="number">02</div>
+        <h3 data-i18n="p2_title">Дизайн</h3>
+        <p data-i18n="p2_text">
+          Створюємо структуру, UI/UX та візуальний стиль.
+        </p>
+      </div>
+
+      <div class="process-card reveal">
+        <div class="number">03</div>
+        <h3 data-i18n="p3_title">Розробка</h3>
+        <p data-i18n="p3_text">
+          Перетворюємо концепцію на працюючий продукт.
+        </p>
+      </div>
+
+      <div class="process-card reveal">
+        <div class="number">04</div>
+        <h3 data-i18n="p4_title">Запуск</h3>
+        <p data-i18n="p4_text">
+          Тестуємо, запускаємо та допомагаємо з розвитком.
+        </p>
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- PORTFOLIO -->
+
+<section id="portfolio">
+
+  <div class="container">
+
+    <div class="section-heading reveal">
+
+      <div class="eyebrow" data-i18n="portfolio_eyebrow">
+        Портфоліо
+      </div>
+
+      <h2 data-i18n="portfolio_title">
+        Проєкти, які можна масштабувати
+      </h2>
+
+      <p data-i18n="portfolio_description">
+        Приклади напрямків, у яких ми можемо створити продукт.
+      </p>
+
+    </div>
+
+
+    <div class="portfolio">
+
+      <div class="project reveal">
+
+        <div class="project-visual">🤖</div>
+
+        <h3 data-i18n="project1_title">
+          Telegram Commerce
+        </h3>
+
+        <p data-i18n="project1_text">
+          Бот-магазин із каталогом, замовленнями
+          та автоматизацією.
+        </p>
+
+      </div>
+
+
+      <div class="project reveal">
+
+        <div class="project-visual">🚀</div>
+
+        <h3 data-i18n="project2_title">
+          Startup Platform
+        </h3>
+
+        <p data-i18n="project2_text">
+          Сучасна web-платформа для запуску цифрового бізнесу.
+        </p>
+
+      </div>
+
+
+      <div class="project reveal">
+
+        <div class="project-visual">🧠</div>
+
+        <h3 data-i18n="project3_title">
+          AI Assistant
+        </h3>
+
+        <p data-i18n="project3_text">
+          AI-система для автоматичної комунікації з клієнтами.
+        </p>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- PRICING -->
+
+<section id="pricing">
+
+  <div class="container">
+
+    <div class="section-heading reveal">
+
+      <div class="eyebrow" data-i18n="pricing_eyebrow">
+        Орієнтовні ціни
+      </div>
+
+      <h2 data-i18n="pricing_title">
+        Виберіть свій рівень
+      </h2>
+
+      <p data-i18n="pricing_description">
+        Фінальна вартість залежить від складності та функціоналу.
+      </p>
+
+    </div>
+
+
+    <div class="pricing">
+
+      <div class="price-card reveal">
+
+        <h3 data-i18n="basic">START</h3>
+
+        <div class="price">
+          $199 <small data-i18n="from">від</small>
+        </div>
+
+        <p data-i18n="basic_desc">
+          Для простих digital-задач.
+        </p>
+
+        <ul class="price-list">
+          <li>✓ Landing Page</li>
+          <li>✓ Telegram Bot</li>
+          <li>✓ Responsive Design</li>
+          <li>✓ Basic Automation</li>
+        </ul>
+
+        <a href="#contact" class="btn btn-outline" style="width:100%">
+          <span data-i18n="choose">Обрати</span>
+        </a>
+
+      </div>
+
+
+      <div class="price-card featured reveal">
+
+        <div class="popular" data-i18n="popular">
+          ПОПУЛЯРНЕ
+        </div>
+
+        <h3>PRO</h3>
+
+        <div class="price">
+          $499 <small data-i18n="from">від</small>
+        </div>
+
+        <p data-i18n="pro_desc">
+          Для бізнесу та серйозних продуктів.
+        </p>
+
+        <ul class="price-list">
+          <li>✓ Advanced Telegram Bot</li>
+          <li>✓ Website / Web App</li>
+          <li>✓ Payments</li>
+          <li>✓ CRM / API</li>
+          <li>✓ Analytics</li>
+        </ul>
+
+        <a href="#contact" class="btn btn-primary" style="width:100%">
+          <span data-i18n="choose">Обрати</span>
+        </a>
+
+      </div>
+
+
+      <div class="price-card reveal">
+
+        <h3>ENTERPRISE</h3>
+
+        <div class="price">
+          Custom
+        </div>
+
+        <p data-i18n="enterprise_desc">
+          Великий продукт із нестандартною логікою.
+        </p>
+
+        <ul class="price-list">
+          <li>✓ Full Product Development</li>
+          <li>✓ AI Integration</li>
+          <li>✓ Complex Architecture</li>
+          <li>✓ Dedicated Support</li>
+          <li>✓ Scaling</li>
+        </ul>
+
+        <a href="#contact" class="btn btn-outline" style="width:100%">
+          <span data-i18n="discuss">Обговорити</span>
+        </a>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- FAQ -->
+
+<section id="faq">
+
+  <div class="container">
+
+    <div class="section-heading reveal">
+
+      <div class="eyebrow">FAQ</div>
+
+      <h2 data-i18n="faq_title">
+        Часті запитання
+      </h2>
+
+    </div>
+
+
+    <div class="faq">
+
+      <div class="faq-item reveal">
+
+        <button class="faq-question">
+          <span data-i18n="q1">
+            Скільки часу займає розробка?
+          </span>
+
+          <span class="plus">+</span>
+        </button>
+
+        <div class="faq-answer" data-i18n="a1">
+          Простий бот або сайт може бути готовий за кілька днів.
+          Складні системи можуть займати декілька тижнів.
+        </div>
+
+      </div>
+
+
+      <div class="faq-item reveal">
+
+        <button class="faq-question">
+          <span data-i18n="q2">
+            Чи можна зробити все під ключ?
+          </span>
+
+          <span class="plus">+</span>
+        </button>
+
+        <div class="faq-answer" data-i18n="a2">
+          Так. Від дизайну та програмування до запуску,
+          підключення домену, сервера та подальшої підтримки.
+        </div>
+
+      </div>
+
+
+      <div class="faq-item reveal">
+
+        <button class="faq-question">
+          <span data-i18n="q3">
+            Чи можна інтегрувати оплату?
+          </span>
+
+          <span class="plus">+</span>
+        </button>
+
+        <div class="faq-answer" data-i18n="a3">
+          Так, можна інтегрувати відповідні платіжні системи
+          залежно від країни та типу бізнесу.
+        </div>
+
+      </div>
+
+
+      <div class="faq-item reveal">
+
+        <button class="faq-question">
+          <span data-i18n="q4">
+            Чи працюєте ви з іноземними клієнтами?
+          </span>
+
+          <span class="plus">+</span>
+        </button>
+
+        <div class="faq-answer" data-i18n="a4">
+          Так. Сайт підтримує українську та англійську мови,
+          а проєкти можна розробляти для міжнародного ринку.
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- CTA -->
+
+<section>
+
+  <div class="container">
+
+    <div class="cta-box reveal">
+
+      <h2 data-i18n="cta_title">
+        Є ідея?
+        <span class="gradient-text">Давайте створимо.</span>
+      </h2>
+
+      <p data-i18n="cta_text">
+        Розкажіть нам про свій проєкт — ми допоможемо
+        перетворити ідею на працюючий цифровий продукт.
+      </p>
+
+      <a href="#contact" class="btn btn-primary">
+        🚀 <span data-i18n="cta_button">Почати проєкт</span>
+      </a>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- CONTACT -->
+
+<section id="contact">
+
+  <div class="container">
+
+    <div class="contact-grid">
+
+      <div class="contact-info reveal">
+
+        <div class="eyebrow" data-i18n="contact_eyebrow">
+          Контакти
+        </div>
+
+        <h2 data-i18n="contact_title">
+          Створимо щось круте разом.
+        </h2>
+
+        <p data-i18n="contact_text">
+          Напишіть нам. Опишіть ідею у кількох реченнях —
+          ми зв'яжемося з вами та обговоримо деталі.
+        </p>
+
+
+        <div class="contact-item">
+          <div class="contact-icon">✈️</div>
+          <div>
+            <small>Telegram</small><br>
+            <b>@your_username</b>
+          </div>
+        </div>
+
+
+        <div class="contact-item">
+          <div class="contact-icon">✉️</div>
+          <div>
+            <small>Email</small><br>
+            <b>hello@yourdomain.com</b>
+          </div>
+        </div>
+
+
+        <div class="contact-item">
+          <div class="contact-icon">🌍</div>
+          <div>
+            <small data-i18n="location">
+              Працюємо онлайн
+            </small>
+          </div>
+        </div>
+
+      </div>
+
+
+      <form class="contact-form reveal" id="contactForm">
+
+        <div class="form-group">
+
+          <label data-i18n="name">
+            Ваше ім'я
+          </label>
+
+          <input
+            type="text"
+            required
+            placeholder="Ваше ім'я"
+            data-placeholder-uk="Ваше ім'я"
+            data-placeholder-en="Your name"
+          >
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label data-i18n="telegram">
+            Telegram / Контакт
+          </label>
+
+          <input
+            type="text"
+            required
+            placeholder="@username"
+          >
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label data-i18n="service">
+            Що потрібно?
+          </label>
+
+          <select>
+
+            <option value="bot" data-i18n="option_bot">
+              Telegram-бот
+            </option>
+
+            <option value="website" data-i18n="option_site">
+              Сайт
+            </option>
+
+            <option value="miniapp" data-i18n="option_miniapp">
+              Telegram Mini App
+            </option>
+
+            <option value="ai" data-i18n="option_ai">
+              AI-рішення
+            </option>
+
+            <option value="automation" data-i18n="option_auto">
+              Автоматизація
+            </option>
+
+            <option value="other" data-i18n="option_other">
+              Інше
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label data-i18n="message">
+            Розкажіть про проєкт
+          </label>
+
+          <textarea
+            required
+            data-placeholder-uk="Опишіть вашу ідею..."
+            data-placeholder-en="Describe your idea..."
+            placeholder="Опишіть вашу ідею..."
+          ></textarea>
+
+        </div>
+
+
+        <button class="btn btn-primary" style="width:100%" type="submit">
+
+          🚀
+          <span data-i18n="send">
+            Відправити заявку
+          </span>
+
+        </button>
+
+      </form>
+
+    </div>
+
+  </div>
+
+</section>
+
+</main>
+
+
+<!-- FOOTER -->
+
+<footer>
+
+  <div class="footer-inner">
+
+    <div>
+      © 2026 BOTLAB. <span data-i18n="rights">Всі права захищені.</span>
+    </div>
+
+    <div class="footer-links">
+      <a href="#services" data-i18n="nav_services">Послуги</a>
+      <a href="#portfolio" data-i18n="nav_portfolio">Портфоліо</a>
+      <a href="#contact" data-i18n="nav_contact">Контакти</a>
+    </div>
+
+  </div>
+
+</footer>
+
+
+<script>
+
+  /* =========================
+     MOBILE MENU
+  ========================= */
+
+  const menuBtn = document.getElementById("menuBtn");
+  const navLinks = document.getElementById("navLinks");
+
+  menuBtn.addEventListener("click", () => {
+    navLinks.classList.toggle("active");
+  });
+
+  document.querySelectorAll(".nav-links a").forEach(link => {
+    link.addEventListener("click", () => {
+      navLinks.classList.remove("active");
+    });
+  });
+
+
+  /* =========================
+     HEADER SCROLL
+  ========================= */
+
+  const header = document.getElementById("header");
+
+  window.addEventListener("scroll", () => {
+
+    if (window.scrollY > 30) {
+      header.classList.add("scrolled");
+    } else {
+      header.classList.remove("scrolled");
+    }
+
+  });
+
+
+  /* =========================
+     SCROLL ANIMATION
+  ========================= */
+
+  const observer = new IntersectionObserver(
+    entries => {
+
+      entries.forEach(entry => {
+
+        if (entry.isIntersecting) {
+          entry.target.classList.add("visible");
+        }
+
+      });
+
+    },
+    {
+      threshold: .12
+    }
+  );
+
+  document.querySelectorAll(".reveal").forEach(el => {
+    observer.observe(el);
+  });
+
+
+  /* =========================
+     FAQ
+  ========================= */
+
+  document.querySelectorAll(".faq-question").forEach(button => {
+
+    button.addEventListener("click", () => {
+
+      const item = button.parentElement;
+
+      document.querySelectorAll(".faq-item").forEach(other => {
+
+        if (other !== item) {
+          other.classList.remove("active");
+        }
+
+      });
+
+      item.classList.toggle("active");
+
+    });
+
+  });
+
+
+  /* =========================
+     TRANSLATIONS
+  ========================= */
+
+  const translations = {
+
+    uk: {
+
+      nav_services: "Послуги",
+      nav_portfolio: "Портфоліо",
+      nav_process: "Процес",
+      nav_prices: "Ціни",
+      nav_faq: "FAQ",
+      nav_contact: "Контакти",
+      nav_button: "Замовити",
+
+      badge: "Працюємо з клієнтами по всьому світу",
+
+      hero_title1: "Створюємо цифрові",
+      hero_title2: "продукти нового рівня",
+
+      hero_description:
+        "Telegram-боти, Mini Apps, сайти, вебсервіси, автоматизація та AI-рішення. Від ідеї до готового продукту.",
+
+      hero_button1: "Обговорити проєкт",
+      hero_button2: "Дивитися роботи",
+
+      stat1: "Підтримка",
+      stat2: "Можливості",
+      stat3: "Під ключ",
+
+      services_eyebrow: "Наші можливості",
+      services_title: "Робимо більше, ніж просто сайти",
+      services_description:
+        "Повний спектр digital-розробки для бізнесу, стартапів та особистих проєктів.",
+
+      s1_title: "Telegram-боти",
+      s1_text: "Розумні боти для бізнесу, продажів, підтримки та автоматизації.",
+      s1_l1: "Боти-магазини",
+      s1_l2: "Платіжні системи",
+      s1_l3: "CRM інтеграції",
+      s1_l4: "Автоматизація",
+
+      s2_title: "Сайти",
+      s2_text: "Сучасні сайти з унікальним дизайном та високою швидкістю.",
+      s2_l1: "Landing pages",
+      s2_l2: "Корпоративні сайти",
+      s2_l3: "Інтернет-магазини",
+      s2_l4: "Web Apps",
+
+      s3_title: "Telegram Mini Apps",
+      s3_text: "Повноцінні вебдодатки всередині Telegram.",
+      s3_l1: "Web Apps",
+      s3_l2: "Кабінети користувачів",
+      s3_l3: "Каталоги",
+      s3_l4: "Системи замовлень",
+
+      s4_title: "AI-рішення",
+      s4_text: "Інтеграція штучного інтелекту у ваш продукт.",
+      s4_l1: "AI-боти",
+      s4_l2: "AI-консультанти",
+      s4_l3: "Автоматизація",
+      s4_l4: "API інтеграції",
+
+      s5_title: "Автоматизація",
+      s5_text: "Прибираємо рутину та автоматизуємо процеси.",
+      s5_l1: "CRM",
+      s5_l2: "API",
+      s5_l3: "Парсинг",
+      s5_l4: "Системи повідомлень",
+
+      s6_title: "UI/UX та дизайн",
+      s6_text: "Створюємо інтерфейси, які виглядають дорого та зручні для користувача.",
+      s6_l1: "UI дизайн",
+      s6_l2: "UX прототипи",
+      s6_l3: "Branding",
+      s6_l4: "Анімації",
+
+      process_eyebrow: "Як ми працюємо",
+      process_title: "Від ідеї до запуску",
+      process_description: "Простий процес без зайвої бюрократії.",
+
+      p1_title: "Ідея",
+      p1_text: "Обговорюємо вашу задачу, цілі та майбутній продукт.",
+
+      p2_title: "Дизайн",
+      p2_text: "Створюємо структуру, UI/UX та візуальний стиль.",
+
+      p3_title: "Розробка",
+      p3_text: "Перетворюємо концепцію на працюючий продукт.",
+
+      p4_title: "Запуск",
+      p4_text: "Тестуємо, запускаємо та допомагаємо з розвитком.",
+
+      portfolio_eyebrow: "Портфоліо",
+      portfolio_title: "Проєкти, які можна масштабувати",
+      portfolio_description:
+        "Приклади напрямків, у яких ми можемо створити продукт.",
+
+      project1_title: "Telegram Commerce",
+      project1_text:
+        "Бот-магазин із каталогом, замовленнями та автоматизацією.",
+
+      project2_title: "Startup Platform",
+      project2_text:
+        "Сучасна web-платформа для запуску цифрового бізнесу.",
+
+      project3_title: "AI Assistant",
+      project3_text:
+        "AI-система для автоматичної комунікації з клієнтами.",
+
+      pricing_eyebrow: "Орієнтовні ціни",
+      pricing_title: "Виберіть свій рівень",
+      pricing_description:
+        "Фінальна вартість залежить від складності та функціоналу.",
+
+      basic: "START",
+      from: "від",
+      basic_desc: "Для простих digital-задач.",
+      choose: "Обрати",
+
+      popular: "ПОПУЛЯРНЕ",
+
+      pro_desc: "Для бізнесу та серйозних продуктів.",
+
+      enterprise_desc:
+        "Великий продукт із нестандартною логікою.",
+
+      discuss: "Обговорити",
+
+      faq_title: "Часті запитання",
+
+      q1: "Скільки часу займає розробка?",
+      a1: "Простий бот або сайт може бути готовий за кілька днів. Складні системи можуть займати декілька тижнів.",
+
+      q2: "Чи можна зробити все під ключ?",
+      a2: "Так. Від дизайну та програмування до запуску, підключення домену, сервера та подальшої підтримки.",
+
+      q3: "Чи можна інтегрувати оплату?",
+      a3: "Так, можна інтегрувати відповідні платіжні системи залежно від країни та типу бізнесу.",
+
+      q4: "Чи працюєте ви з іноземними клієнтами?",
+      a4: "Так. Сайт підтримує українську та англійську мови, а проєкти можна розробляти для міжнародного ринку.",
+
+      cta_title: "Є ідея? Давайте створимо.",
+      cta_text:
+        "Розкажіть нам про свій проєкт — ми допоможемо перетворити ідею на працюючий цифровий продукт.",
+      cta_button: "Почати проєкт",
+
+      contact_eyebrow: "Контакти",
+      contact_title: "Створимо щось круте разом.",
+      contact_text:
+        "Напишіть нам. Опишіть ідею у кількох реченнях — ми зв'яжемося з вами та обговоримо деталі.",
+
+      location: "Працюємо онлайн",
+
+      name: "Ваше ім'я",
+      telegram: "Telegram / Контакт",
+      service: "Що потрібно?",
+      message: "Розкажіть про проєкт",
+
+      option_bot: "Telegram-бот",
+      option_site: "Сайт",
+      option_miniapp: "Telegram Mini App",
+      option_ai: "AI-рішення",
+      option_auto: "Автоматизація",
+      option_other: "Інше",
+
+      send: "Відправити заявку",
+
+      rights: "Всі права захищені."
+
+    },
+
+
+    en: {
+
+      nav_services: "Services",
+      nav_portfolio: "Portfolio",
+      nav_process: "Process",
+      nav_prices: "Pricing",
+      nav_faq: "FAQ",
+      nav_contact: "Contact",
+      nav_button: "Order",
+
+      badge: "Working with clients worldwide",
+
+      hero_title1: "We create digital",
+      hero_title2: "products of a new level",
+
+      hero_description:
+        "Telegram bots, Mini Apps, websites, web services, automation and AI solutions. From idea to finished product.",
+
+      hero_button1: "Discuss project",
+      hero_button2: "View projects",
+
+      stat1: "Support",
+      stat2: "Possibilities",
+      stat3: "Turnkey",
+
+      services_eyebrow: "Our capabilities",
+      services_title: "More than just websites",
+      services_description:
+        "A complete digital development spectrum for businesses, startups and personal projects.",
+
+      s1_title: "Telegram Bots",
+      s1_text: "Smart bots for business, sales, support and automation.",
+      s1_l1: "Shop bots",
+      s1_l2: "Payment systems",
+      s1_l3: "CRM integrations",
+      s1_l4: "Automation",
+
+      s2_title: "Websites",
+      s2_text: "Modern websites with unique design and high performance.",
+      s2_l1: "Landing pages",
+      s2_l2: "Corporate websites",
+      s2_l3: "Online stores",
+      s2_l4: "Web Apps",
+
+      s3_title: "Telegram Mini Apps",
+      s3_text: "Full web applications inside Telegram.",
+      s3_l1: "Web Apps",
+      s3_l2: "User dashboards",
+      s3_l3: "Catalogs",
+      s3_l4: "Ordering systems",
+
+      s4_title: "AI Solutions",
+      s4_text: "Artificial intelligence integrated into your product.",
+      s4_l1: "AI bots",
+      s4_l2: "AI assistants",
+      s4_l3: "Automation",
+      s4_l4: "API integrations",
+
+      s5_title: "Automation",
+      s5_text: "Remove routine tasks and automate your processes.",
+      s5_l1: "CRM",
+      s5_l2: "API",
+      s5_l3: "Parsing",
+      s5_l4: "Notification systems",
+
+      s6_title: "UI/UX & Design",
+      s6_text: "Interfaces that look premium and are easy to use.",
+      s6_l1: "UI design",
+      s6_l2: "UX prototypes",
+      s6_l3: "Branding",
+      s6_l4: "Animations",
+
+      process_eyebrow: "How we work",
+      process_title: "From idea to launch",
+      process_description: "A simple process without unnecessary bureaucracy.",
+
+      p1_title: "Idea",
+      p1_text: "We discuss your task, goals and future product.",
+
+      p2_title: "Design",
+      p2_text: "We create structure, UI/UX and visual style.",
+
+      p3_title: "Development",
+      p3_text: "We turn the concept into a working product.",
+
+      p4_title: "Launch",
+      p4_text: "We test, launch and help you grow.",
+
+      portfolio_eyebrow: "Portfolio",
+      portfolio_title: "Projects built to scale",
+      portfolio_description:
+        "Examples of digital products we can create.",
+
+      project1_title: "Telegram Commerce",
+      project1_text:
+        "Shop bot with catalog, orders and automation.",
+
+      project2_title: "Startup Platform",
+      project2_text:
+        "Modern web platform for launching a digital business.",
+
+      project3_title: "AI Assistant",
+      project3_text:
+        "AI system for automated customer communication.",
+
+      pricing_eyebrow: "Estimated pricing",
+      pricing_title: "Choose your level",
+      pricing_description:
+        "Final price depends on complexity and functionality.",
+
+      basic: "START",
+      from: "from",
+      basic_desc: "For simple digital tasks.",
+      choose: "Choose",
+
+      popular: "POPULAR",
+
+      pro_desc: "For businesses and serious digital products.",
+
+      enterprise_desc:
+        "Large products with custom logic.",
+
+      discuss: "Discuss",
+
+      faq_title: "Frequently asked questions",
+
+      q1: "How long does development take?",
+      a1: "A simple bot or website can be ready within a few days. Complex systems can take several weeks.",
+
+      q2: "Can you build everything turnkey?",
+      a2: "Yes. From design and development to launch, domain, server setup and ongoing support.",
+
+      q3: "Can you integrate payments?",
+      a3: "Yes. We can integrate suitable payment systems depending on the country and business type.",
+
+      q4: "Do you work with international clients?",
+      a4: "Yes. The website supports Ukrainian and English, and projects can be built for international markets.",
+
+      cta_title: "Have an idea? Let's build it.",
+      cta_text:
+        "Tell us about your project and we'll help turn your idea into a working digital product.",
+      cta_button: "Start project",
+
+      contact_eyebrow: "Contact",
+      contact_title: "Let's create something great together.",
+      contact_text:
+        "Write to us. Describe your idea in a few sentences and we'll get back to discuss the details.",
+
+      location: "Working online",
+
+      name: "Your name",
+      telegram: "Telegram / Contact",
+      service: "What do you need?",
+      message: "Tell us about your project",
+
+      option_bot: "Telegram Bot",
+      option_site: "Website",
+      option_miniapp: "Telegram Mini App",
+      option_ai: "AI Solution",
+      option_auto: "Automation",
+      option_other: "Other",
+
+      send: "Send request",
+
+      rights: "All rights reserved."
+
+    }
+
+  };
+
+
+  /* =========================
+     LANGUAGE SWITCHER
+  ========================= */
+
+  const language = document.getElementById("language");
+
+  function setLanguage(lang) {
+
+    document.documentElement.lang = lang;
+
+    document.querySelectorAll("[data-i18n]").forEach(element => {
+
+      const key = element.getAttribute("data-i18n");
+
+      if (translations[lang][key]) {
+        element.textContent = translations[lang][key];
+      }
+
+    });
+
+
+    document.querySelectorAll("[data-placeholder-uk]").forEach(element => {
+
+      if (lang === "uk") {
+        element.placeholder = element.dataset.placeholderUk;
+      } else {
+        element.placeholder = element.dataset.placeholderEn;
+      }
+
+    });
+
+
+    localStorage.setItem("language", lang);
+
+  }
+
+
+  language.addEventListener("change", () => {
+    setLanguage(language.value);
+  });
+
+
+  const savedLanguage = localStorage.getItem("language") || "uk";
+
+  language.value = savedLanguage;
+
+  setLanguage(savedLanguage);
+
+
+  /* =========================
+     FORM
+  ========================= */
+
+  document.getElementById("contactForm").addEventListener("submit", function(e) {
+
+    e.preventDefault();
+
+    const lang = language.value;
+
+    if (lang === "uk") {
+
+      alert(
+        "Дякуємо! Заявку підготовлено. Тепер підключіть форму до вашого Telegram або backend."
+      );
+
+    } else {
+
+      alert(
+        "Thank you! Your request is ready. Connect the form to your Telegram or backend."
+      );
+
+    }
+
+    this.reset();
+
+  });
+
+
+  /* =========================
+     CURSOR PARALLAX
+  ========================= */
+
+  const heroCard = document.querySelector(".hero-card");
+
+  document.addEventListener("mousemove", e => {
+
+    if (window.innerWidth < 900) return;
+
+    const x = (window.innerWidth / 2 - e.clientX) / 80;
+    const y = (window.innerHeight / 2 - e.clientY) / 80;
+
+    heroCard.style.transform =
+      `perspective(1000px) rotateY(${-x}deg) rotateX(${y}deg)`;
+
+  });
+
+</script>
+
+</body>
+</html>
+```
